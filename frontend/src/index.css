@@ -1,0 +1,44 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ─── Tailwind ─────────────────────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { @apply box-border; }
+  html { @apply scroll-smooth; }
+
+  body {
+    @apply bg-[#f7f8fb] text-slate-900 font-sans antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(14, 165, 233, 0.10), transparent 22%),
+      radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.06), transparent 20%),
+      linear-gradient(180deg, #f7f8fb 0%, #f3f5f9 100%);
+  }
+
+  ::selection {
+    @apply bg-sky-200 text-slate-900;
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400; }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-sky-500 ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer utilities {
+  .container-app {
+    @apply w-full px-4 sm:px-6 lg:px-8;
+  }
+
+  .soft-panel {
+    @apply rounded-3xl border border-slate-200/80 bg-white/80 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(15,23,42,0.18)];
+  }
+}
+

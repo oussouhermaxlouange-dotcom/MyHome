@@ -1,0 +1,49 @@
+@startuml MyHome_UseCases
+title MyHome — Cas d’utilisation Phase 1
+left to right direction
+skinparam actorStyle awesome
+actor "Visiteur" as Visitor
+actor "Locataire" as Tenant
+actor "Propriétaire" as Landlord
+actor "Administrateur" as Admin
+rectangle "MyHome — FastAPI / React" {
+ usecase "Voir annonces approuvées\net leurs détails" as GuestListings
+ usecase "Recherche basique" as BasicSearch
+ usecase "S'inscrire / se connecter" as SignIn
+ usecase "Voir le catalogue complet
+et les détails" as FullCatalog
+ usecase "Gérer les favoris" as Favorites
+ usecase "Créer une conversation
+et échanger" as Messaging
+ usecase "Publier et gérer
+ses logements" as ManageListings
+ usecase "Lire et répondre
+aux messages" as Reply
+ usecase "Approuver / masquer /
+supprimer un logement" as Moderate
+ usecase "Bloquer / débloquer
+un compte" as ManageUsers
+}
+Visitor --> GuestListings
+Visitor --> BasicSearch
+Visitor --> SignIn
+Tenant --|> Visitor
+Tenant --> FullCatalog
+Tenant --> Favorites
+Tenant --> Messaging
+Landlord --> SignIn
+Landlord --> ManageListings
+Landlord --> Reply
+Admin --> Moderate
+Admin --> ManageUsers
+Admin --> ManageListings
+note bottom of Visitor
+ Les visiteurs n'ont pas de compte en base.
+ Ils peuvent voir jusqu'à six annonces approuvées
+ et leurs détails; une connexion est requise pour agir.
+end note
+note right of Admin
+ Le rôle ADMIN est attribué hors inscription,
+ par l'opérateur du serveur.
+end note
+@enduml

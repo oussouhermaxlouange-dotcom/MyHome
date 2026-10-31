@@ -1,0 +1,110 @@
+@startuml MyHome_ER
+title MyHome — Schéma relationnel Phase 1
+hide circle
+skinparam linetype ortho
+entity "users (Users)" as users {
+ * id : VARCHAR <<PK>>
+ --
+ first_name : VARCHAR(80)  ' prenom
+ last_name : VARCHAR(80)   ' nom
+ email : VARCHAR(160) <<UNIQUE>>
+ password_hash : VARCHAR(255)
+ phone : VARCHAR(32)
+ role : VARCHAR(20)
+ avatar_url : VARCHAR(500)
+ is_blocked : BOOLEAN
+ created_at : TIMESTAMP
+}
+entity "apartments (Logements)" as apartments {
+ * id : VARCHAR <<PK>>
+ --
+ landlord_id : VARCHAR <<FK users.id>>
+ quartier_id : VARCHAR <<FK nullable>>
+ title : VARCHAR(240)
+ description : TEXT
+ type : VARCHAR(40)
+ price : INTEGER
+ surface : INTEGER
+ rooms : INTEGER
+ bedrooms : INTEGER
+ bathrooms : INTEGER
+ street : VARCHAR(200)
+ status : VARCHAR(20)
+ is_approved : BOOLEAN
+ is_hidden : BOOLEAN
+ published_at : TIMESTAMP
+ photos : TEXT
+}
+entity "quartiers (Quartiers)" as quartiers {
+ * id : VARCHAR <<PK>>
+ --
+ nom : VARCHAR(120)
+ arrondissement : VARCHAR(120)
+}
+entity "photos_logement (PhotosLogement)" as photos {
+ * id : VARCHAR <<PK>>
+ --
+ logement_id : VARCHAR <<FK apartments.id>>
+ url_photo : VARCHAR(1000)
+ ordre : INTEGER
+}
+entity "favorites (Favoris)" as favorites {
+ * id : INTEGER <<PK>>
+ --
+ user_id : VARCHAR <<FK users.id>>
+ apartment_id : VARCHAR <<FK apartments.id>>
+ created_at : TIMESTAMP
+}
+entity "conversations (Conversations)" as conversations {
+ * id : VARCHAR <<PK>>
+ --
+ tenant_id : VARCHAR <<FK users.id>>
+ landlord_id : VARCHAR <<FK users.id>>
+ apartment_id : VARCHAR <<FK apartments.id>>
+ created_at : TIMESTAMP
+ UNIQUE(tenant_id, landlord_id, apartment_id)
+}
+entity "messages (Messages)" as messages {
+ * id : VARCHAR <<PK>>
+ --
+ conversation_id : VARCHAR <<FK conversations.id>>
+ sender_id : VARCHAR <<FK users.id>>
+ receiver_id : VARCHAR <<FK users.id>>
+ apartment_id : VARCHAR <<FK apartments.id>>
+ content : TEXT
+ is_read : BOOLEAN
+ created_at : TIMESTAMP
+ timestamp : TIMESTAMP
+}
+entity "tenant_documents (Documents, LOCATAIRE)" as documents {
+ * id : VARCHAR <<PK>>
+ --
+ user_id : VARCHAR <<FK users.id>>
+ kind : VARCHAR(24)  ' identity / income
+ filename : VARCHAR(255)
+ storage_name : VARCHAR(80) <<UNIQUE>>
+ content_type : VARCHAR(100)
+ size : INTEGER
+ status : VARCHAR(16)  ' pending / approved / rejected
+ created_at : TIMESTAMP
+}
+users ||--o{ apartments : proprietaire
+quartiers o|--o{ apartments : quartier
+apartments ||--o{ photos : photos
+users ||--o{ favorites : locataire
+apartments ||--o{ favorites : logement
+users ||--o{ conversations : locataire
+users ||--o{ conversations : proprietaire
+apartments ||--o{ conversations : sujet
+conversations ||--o{ messages : contient
+users ||--o{ messages : expediteur / destinataire
+users ||--o{ documents : dossier, LOCATAIRE
+note bottom
+ Prix en FCFA; status=available signifie disponible. receiver_id, apartment_id
+ et timestamp dans messages assurent la compatibilité avec les anciennes routes.
+ Backend: FastAPI (Python) + SQLAlchemy 2.
+ SQLite est la base par défaut; PostgreSQL se configure via DATABASE_URL.
+ Noms métier entre parenthèses; tables historiques users/apartments/favorites
+ conservées pour compatibilité. VISITEUR est anonyme et n'est pas persisté.
+end note
+@enduml

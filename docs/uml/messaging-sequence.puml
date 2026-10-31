@@ -1,0 +1,26 @@
+@startuml MyHome_Messaging
+title MyHome — Séquence messagerie
+actor Locataire
+participant React as FE
+participant FastAPI as API
+participant "RequireRole + SQLAlchemy" as ORM
+database "SQLite / PostgreSQL" as DB
+actor Proprietaire
+Locataire -> FE : Clique « Contacter le bailleur »
+FE -> API : POST /api/conversations {apartmentId}
+API -> ORM : RequireRole(LOCATAIRE)
+ORM -> DB : récupérer ou créer conversations
+DB --> API : conversation_id
+API --> FE : 201 Conversation
+Locataire -> FE : Envoie contenu
+FE -> API : POST /api/messages {conversationId, content}
+API -> ORM : Vérifie le participant
+ORM -> DB : INSERT messages
+DB --> API : message créé
+API --> FE : 201 Message
+FE --> Proprietaire : Message visible dans le tableau de bord
+Proprietaire -> FE : Répond
+FE -> API : POST /api/messages {conversationId, content}
+API -> DB : INSERT messages
+DB --> FE : Message enregistré
+@enduml

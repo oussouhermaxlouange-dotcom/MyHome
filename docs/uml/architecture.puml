@@ -1,0 +1,40 @@
+@startuml MyHome_Architecture
+title MyHome — Architecture technique Phase 1
+skinparam componentStyle rectangle
+actor "Visiteur / Locataire /
+Propriétaire / Admin" as User
+package "Frontend" {
+ [React + TypeScript
+Vite] as FE
+ [Pages annonces,
+dashboard et admin] as Pages
+ [API client + JWT] as Client
+}
+package "Backend Python" {
+ [FastAPI routes] as API
+ [RequireRole RBAC
++ JWT dependencies] as RBAC
+ [SQLAlchemy ORM] as ORM
+ [Private document storage] as PrivateFiles
+ [Public apartment photo storage] as Photos
+}
+database "SQLite
+par défaut" as SQLite
+database "PostgreSQL
+DATABASE_URL" as PG
+User --> FE
+FE --> Pages
+Pages --> Client
+Client --> API : REST / JSON + Bearer JWT
+API --> RBAC
+RBAC --> ORM
+API --> Photos : annonces
+API --> PrivateFiles : documents locataires
+ORM --> SQLite
+ORM --> PG
+note right of RBAC
+ Rôles persistés: tenant / landlord / admin.
+ Le visiteur est anonyme. Les comptes admin sont
+ provisionnés par l'opérateur du serveur.
+end note
+@enduml
