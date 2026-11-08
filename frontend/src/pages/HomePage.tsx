@@ -41,28 +41,28 @@ const CATEGORIES = [
     label: 'Studios & Meublés',
     description: 'Idéal consultant, étudiant & séjour',
     count: '320+ annonces',
-    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80',
+    image: '/img/piece-de-vie.jpg',
   },
   {
     type: 'apartment',
     label: 'Appartements T2 & T3',
     description: 'Cadjehoun, Fidjrossè, Akpakpa',
     count: '540+ annonces',
-    image: 'https://images.unsplash.com/photo-1502005229762-ee1b2da97e06?w=600&q=80',
+    image: '/img/salon-prestige.jpg',
   },
   {
     type: 'room',
     label: 'Chambres & Entrées perso',
     description: 'Calavi UAC, Cotonou centre',
     count: '210+ annonces',
-    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
+    image: '/img/chambre-pastel.jpg',
   },
   {
     type: 'house',
     label: 'Villas & Concessions',
     description: 'Jardin, cour privée, parking sécurisé',
     count: '95+ annonces',
-    image: 'https://images.unsplash.com/photo-1571508601891-ca5e7a713859?w=600&q=80',
+    image: '/img/villa-moderne.jpg',
   },
 ]
 
@@ -156,7 +156,7 @@ export default function HomePage() {
   useEffect(() => {
     let cancelled = false
     apiRequest<ApiApartment[]>('/api/apartments?limit=100', { token })
-      .then((items) => { if (!cancelled && Array.isArray(items) && items.length > 0) setApiApartments(items as unknown as Apartment[]) })
+      .then((items) => { if (!cancelled && Array.isArray(items)) setApiApartments(items as unknown as Apartment[]) })
       .catch(() => { /* repli silencieux sur les données de démonstration */ })
     return () => { cancelled = true }
   }, [token])
@@ -439,16 +439,22 @@ export default function HomePage() {
         </div>
 
         {/* Listings Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {featuredApartments.map((apartment) => (
-            <ApartmentCard
-              key={apartment.id}
-              apartment={apartment}
-              variant="grid"
-              onClick={(id) => navigate(`/annonces/${id}`)}
-            />
-          ))}
-        </div>
+        {featuredApartments.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {featuredApartments.map((apartment) => (
+              <ApartmentCard
+                key={apartment.id}
+                apartment={apartment}
+                variant="grid"
+                onClick={(id) => navigate(`/annonces/${id}`)}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-600">
+            Aucun logement ne correspond à cette sélection pour le moment.
+          </p>
+        )}
 
         <div className="text-center pt-8">
           <Button
@@ -458,7 +464,7 @@ export default function HomePage() {
             rightIcon={<ArrowRight size={16} />}
             className="rounded-xl px-6 font-semibold shadow-xs"
           >
-            Explorer les {catalog.length} logements disponibles au Bénin
+            {catalog.length > 0 ? `Explorer les ${catalog.length} logements disponibles au Bénin` : 'Consulter les annonces'}
           </Button>
         </div>
       </section>

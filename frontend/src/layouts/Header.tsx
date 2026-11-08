@@ -58,13 +58,12 @@ export function Header() {
       <div className="container-app flex h-20 items-center justify-between gap-4">
         <div className="flex items-center gap-5 lg:gap-8">
           <Link to="/" className="group flex items-center gap-3 rounded-2xl p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500" aria-label="MyHome accueil">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 via-cyan-500 to-indigo-600 text-white shadow-[0_16px_30px_-12px_rgba(14,165,233,0.7)] transition-transform group-hover:scale-105">
-              <Building2 size={22} />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-black tracking-[-0.06em] text-slate-900">
-                MyHome<span className="text-sky-600">.</span>
-              </span>
+            <img
+              src="/img/logo-myhome.jpg"
+              alt="MyHome"
+              className="h-11 w-auto rounded-2xl shadow-[0_10px_24px_-10px_rgba(15,23,42,0.35)] transition-transform group-hover:scale-105"
+            />
+            <div className="hidden flex-col sm:flex">
               <span className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-400">
                 location premium
               </span>

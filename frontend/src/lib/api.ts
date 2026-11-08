@@ -1,5 +1,18 @@
 export const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '')
 
+/**
+ * Résout l'URL d'un média renvoyé par l'API :
+ * - URL absolue (Unsplash, serveur distant) → telle quelle ;
+ * - chemin `/uploads/...` (photo stockée par le backend) → préfixé par l'API ;
+ * - chemin local public du site (`/img/...`, fallbacks, données mock) → tel quel.
+ */
+export function mediaUrl(url: string | undefined | null): string {
+  if (!url) return ''
+  if (/^https?:\/\//i.test(url)) return url
+  if (url.startsWith('/uploads/')) return API_BASE_URL + url
+  return url
+}
+
 export class ApiError extends Error {
   status: number
 

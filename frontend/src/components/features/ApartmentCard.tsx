@@ -15,7 +15,7 @@ import type { Apartment, EnergyScore } from '@/types'
 import { useFavorites } from '@/context/FavoritesContext'
 import { useToast } from '@/context/ToastContext'
 import { useAuth } from '@/context/AuthContext'
-import { apiRequest } from '@/lib/api'
+import { apiRequest, mediaUrl } from '@/lib/api'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -74,11 +74,11 @@ function CardGallery({ photos, title }: { photos: string[]; title: string }) {
     >
       <img
         key={idx}
-        src={photos[idx]}
+        src={mediaUrl(photos[idx])}
         alt={`${title} — photo ${idx + 1}`}
         className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         loading="lazy"
-        onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80' }}
+        onError={(e) => { e.currentTarget.src = '/img/studio-vide.jpg' }}
       />
 
       {/* Navigation arrows */}
@@ -175,11 +175,11 @@ export function ApartmentCard({
         {/* Photo */}
         <div className="relative sm:w-64 flex-shrink-0 aspect-[4/3] sm:aspect-auto">
           <img
-            src={apartment.photos[0]}
+            src={mediaUrl(apartment.photos[0])}
             alt={apartment.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
-            onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80' }}
+            onError={(e) => { e.currentTarget.src = '/img/studio-vide.jpg' }}
           />
           {/* Badge one-click */}
           {apartment.isOneClickCompatible && (

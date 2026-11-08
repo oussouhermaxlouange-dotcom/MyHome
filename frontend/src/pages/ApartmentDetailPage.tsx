@@ -37,7 +37,7 @@ import { ApartmentCard } from '@/components/features/ApartmentCard'
 import { useFavorites } from '@/context/FavoritesContext'
 import { useToast } from '@/context/ToastContext'
 import type { Apartment, EnergyScore, VisitSlot } from '@/types'
-import { apiRequest, ApiError, type ApiApartment } from '@/lib/api'
+import { apiRequest, ApiError, mediaUrl, type ApiApartment } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 
 // ─── DPE Config ───────────────────────────────────────────────────────────────
@@ -307,7 +307,7 @@ export default function ApartmentDetailPage() {
             onClick={() => { setLightboxIndex(0); setLightboxOpen(true) }}
           >
             <img
-              src={apartment.photos[0]}
+              src={mediaUrl(apartment.photos[0])}
               alt={apartment.title}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
@@ -320,7 +320,7 @@ export default function ApartmentDetailPage() {
             onClick={() => { setLightboxIndex(1); setLightboxOpen(true) }}
           >
             <img
-              src={apartment.photos[1] || apartment.photos[0]}
+              src={mediaUrl(apartment.photos[1]) || mediaUrl(apartment.photos[0])}
               alt=""
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
@@ -334,7 +334,7 @@ export default function ApartmentDetailPage() {
               onClick={() => { setLightboxIndex(2); setLightboxOpen(true) }}
             >
               <img
-                src={apartment.photos[2] || apartment.photos[0]}
+                src={mediaUrl(apartment.photos[2]) || mediaUrl(apartment.photos[0])}
                 alt=""
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -345,7 +345,7 @@ export default function ApartmentDetailPage() {
               onClick={() => { setLightboxIndex(3); setLightboxOpen(true) }}
             >
               <img
-                src={apartment.photos[3] || apartment.photos[0]}
+                src={mediaUrl(apartment.photos[3]) || mediaUrl(apartment.photos[0])}
                 alt=""
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />

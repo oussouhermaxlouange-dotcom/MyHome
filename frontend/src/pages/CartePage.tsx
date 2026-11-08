@@ -13,7 +13,7 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import { mockApartments } from '@/data/mockApartments'
-import { apiRequest, type ApiApartment } from '@/lib/api'
+import { apiRequest, mediaUrl, type ApiApartment } from '@/lib/api'
 import { Button } from '@/components/ui/Button'
 import { cn, formatPrice } from '@/lib/utils'
 import type { Apartment } from '@/types'
@@ -50,7 +50,7 @@ export default function CartePage() {
   useEffect(() => {
     let cancelled = false
     apiRequest<ApiApartment[]>('/api/apartments?limit=100')
-      .then((items) => { if (!cancelled && Array.isArray(items) && items.length > 0) setApiApartments(items as unknown as Apartment[]) })
+      .then((items) => { if (!cancelled && Array.isArray(items)) setApiApartments(items as unknown as Apartment[]) })
       .catch(() => { /* repli silencieux sur les données de démonstration */ })
     return () => { cancelled = true }
   }, [])
@@ -264,7 +264,7 @@ export default function CartePage() {
                       >
                         <div className="flex gap-3">
                           <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl">
-                            <img src={apt.photos[0]} alt={apt.title} className="h-full w-full object-cover" />
+                            <img src={mediaUrl(apt.photos[0])} alt={apt.title} className="h-full w-full object-cover" />
                             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/70 to-transparent px-2 py-1 text-[10px] font-semibold text-white">
                               {apt.address.city}
                             </div>
@@ -376,7 +376,7 @@ export default function CartePage() {
               {selectedApt && (
                 <div className="absolute bottom-4 right-4 z-20 w-[min(24rem,calc(100%-2rem))] overflow-hidden rounded-[30px] border border-slate-200 bg-white/90 shadow-[0_32px_80px_-28px_rgba(15,23,42,0.45)] backdrop-blur-xl">
                   <div className="relative h-40 w-full">
-                    <img src={selectedApt.photos[0]} alt={selectedApt.title} className="h-full w-full object-cover" />
+                    <img src={mediaUrl(selectedApt.photos[0])} alt={selectedApt.title} className="h-full w-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-slate-900/10" />
                     <div className="absolute left-3 top-3 flex items-center gap-2 rounded-full border border-white/20 bg-slate-900/70 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md">
                       <BadgeCheck className="h-3 w-3 text-emerald-400" />

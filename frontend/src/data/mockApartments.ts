@@ -4,7 +4,7 @@ import type { Apartment } from '@/types'
  * Données d'annonces immobilières vérifiées pour MyHome au Bénin.
  * Loyers et charges en XOF (FCFA), quartiers de Cotonou et principales villes du Bénin.
  */
-export const mockApartments: Apartment[] = [
+const mockApartmentsBase: Apartment[] = [
   {
     id: '1',
     title: 'Appartement 3 pièces de haut standing meublé — Cotonou Haie Vive',
@@ -302,3 +302,18 @@ export const mockApartments: Apartment[] = [
     isOneClickCompatible: true,
   },
 ]
+
+// Photos locales servies par le site (public/img) — variété par rotation selon l'annonce.
+const LOCAL_STOCK = [
+  '/img/salon-prestige.jpg',
+  '/img/chambre-confort.jpg',
+  '/img/piece-de-vie.jpg',
+  '/img/villa-moderne.jpg',
+  '/img/studio-vide.jpg',
+  '/img/chambre-pastel.jpg',
+]
+
+export const mockApartments: Apartment[] = mockApartmentsBase.map((apartment, index) => ({
+  ...apartment,
+  photos: [LOCAL_STOCK[index % LOCAL_STOCK.length], LOCAL_STOCK[(index + 1) % LOCAL_STOCK.length]],
+}))

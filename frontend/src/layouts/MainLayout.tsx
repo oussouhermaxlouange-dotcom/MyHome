@@ -90,8 +90,8 @@ export function MainLayout() {
               {/* Col 1: Brand & Presentation */}
               <div className="lg:col-span-2 space-y-4">
                 <Link to="/" className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center text-white">
-                    <Building2 size={20} />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1">
+                    <img src="/img/logo-myhome.jpg" alt="MyHome" className="h-full w-full object-contain" />
                   </div>
                   <span className="font-extrabold text-white text-xl tracking-tight">
                     MyHome<span className="text-primary-500">.</span>
